@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+
+        <title>Exercício do Passarinho</title>
+
+        <style>
+
+            body {
+                display: flex;
+                justify-content:center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+        </style>
+
+    </head>
+
+        <body>
+
+<script>
+//Adicione as configurações do Phaser ao seu codigo para auxiliar.
+    var config = {
+        type: Phaser.AUTO,
+        width: 1000,
+        height: 640,
+
+        scene: {
+            preload: preload,
+            create: create,
+            update: update  
+        }
+    };
+
+    var game = new Phaser.Game(config);
+
+    var passarinho; //Adicionando a variavel var para condição de existencia dentro do codigo.
+
+    function preload() {
+
+        this.load.image("fundo", "assets/floresta.jpg");//Adicionando imagem de fundo de tela.
+        this.load.spritesheet("passarinho", "assets/bird-red.png", { frameWidth: 75, frameHeight: 75});// Adicionando passaro com seus frames.
+
+    }
+
+    function create(){ //Adicionando tamanhos e escalas as imagens.
+
+        this.add.image(100, 200, "fundo").setScale(1.2);
+        passarinho = this.add.sprite(100, 300, "passarinho").setScale(1.4);
+
+//Abaixo estamos deixando as condição de animação da imagem escolhida, dando frames para animar o passarinho.
+        this.anims.create({
+            key: "fly",
+            frames: this.anims.generateFrameNumbers("passarinho", { start:0, end:7}),
+            frameRate: 10,//Quantidade de frames por segundo
+            repeat: -1//Numero negativo nos informa uma repetição contínua.
+        });
+
+        passarinho.anims.play("fly", true)//Nesta linha de código, dizemos ao programa que a condição de voo "fly" é verdade para execução.
+    
+    }
+    function update(){
+       // Condição de limite até onde o pasaro pode voar na tela.
+//No bloco abaixo, estaremos determinando as condiçoes de voo do passaro na tela de ida e volta em movimento continuo considerando eixo x e eixo y. 
+
+        if(passarinho.x === 100){
+            passarinho.setFlip(false, false);
+            passarinho.ida = true;
+        }
+
+        if(passarinho.x < 900 && passarinho.ida === true) {
+            console.log("o que aconteceu?");
+            passarinho.x += 4;
+        }
+
+        if(passarinho.x === 900) {
+            passarinho.setFlip(true, false);
+            passarinho.ida = false;
+        }
+
+        if(passarinho.x > 100 && passarinho.ida === false ){
+            console.log("e o que acontece agora?");
+            passarinho.x -= 4;
+        }
+
+        if(passarinho.y <= 100){
+            passarinho.subindo = false;
+        }
+
+        
+        if(passarinho.y >= 640) {
+            passarinho.subindo = true;
+        }
+
+        if (passarinho.subindo){
+            passarinho.y -=3;}
+            else{
+                passarinho.y +=3;
+            }
+        }
+        
+
+</script>
+        </body>
+</html>
